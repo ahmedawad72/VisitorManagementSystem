@@ -1,0 +1,62 @@
+﻿@model IEnumerable<Visitor>
+@{
+    ViewData["Title"] = "الزائرين";    
+}
+
+<a class="btn btn-primary btn-lg" asp-action="Create">
+    <i class="bi bi-person-fill-add"></i>
+    إضافة زائر جديد
+</a>
+
+@if(!Model.Any())
+{
+    <div class="alert  alert-warning mt-4">
+        <h4 class="alert-heading">تنبيــــه</h4>
+        <p class="mb-0"> لا يوجد أي مقابلات في الوقت الحالي</p>
+    </div>
+}
+
+<table class="table mt-5">
+    <thead>
+        <tr>
+            <th>Rank</th>
+            <th>Name</th>
+            <th>Job</th>
+            <th>Purpose</th>
+            <th>Military ID</th>
+            <th>Request Time</th>
+            <th>Status</th>
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            string rowClass = "table-primary";
+            string status = Model.FirstOrDefault().Status;
+            switch (status.Trim().ToLower())
+            {
+                case "approved":
+                    rowClass = "table-success";
+                    break;
+                case "pending":
+                    rowClass = "table-warning";
+                    break;
+                case "refused":
+                    rowClass = "table-danger";
+                    break;
+            }
+        }
+       
+        @foreach (var item in Model)
+        {
+            <tr class="@rowClass">
+                <td>@item.Rank</td>
+                <td>@item.VisitorName</td>
+                <td>@item.Job</td>
+                <td>@item.Purpose</td>
+                <td>@item.VisitorMilitaryID</td>
+                <td>@item.RequestTime.ToString("g")</td>
+                <td>@item.Status</td>
+            </tr>
+        }
+    </tbody>
+</table>
